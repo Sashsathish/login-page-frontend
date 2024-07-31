@@ -8,21 +8,15 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useLogin } from '@/reactquery';
-import { setIsLoading } from '@/store/slices/loaderSlice';
-import { AppDispatch } from '@/store/store';
+
 import { loginSchema } from '@/utils/schemas';
 import { loginSchemaType } from '@/utils/types';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
-  const [errorMsg, setErrorMsg] = useState('');
+
   const {
     register,
     formState: { errors },
@@ -35,21 +29,10 @@ const Login = () => {
       password: '',
     },
   });
-  const { mutateAsync, isPending } = useLogin();
+ 
   async function submitHandler(data: loginSchemaType) {
-    dispatch(setIsLoading(true));
-    const res = await mutateAsync(data);
-    if (res.error) {
-      setErrorMsg(res.message);
-      setTimeout(() => {
-        setErrorMsg('');
-      }, 3000);
-      dispatch(setIsLoading(false));
-      return;
-    }
-
-    navigate('/verify-otp?email=' + data.email);
-    dispatch(setIsLoading(false));
+    console.log(data);
+    alert("valid data");
   }
 
   return (
@@ -78,12 +61,12 @@ const Login = () => {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <Link
-                  to="/forgot-password"
+                <div
+                
                   className="inline-block ml-auto text-xs underline"
                 >
                   Forgot your password?
-                </Link>
+                </div>
               </div>
               <Input id="password" type="password" {...register('password')} />
               {errors.password && (
@@ -92,13 +75,11 @@ const Login = () => {
                 </p>
               )}
             </div>
-            {errorMsg && <p className="text-xs text-red-500">{errorMsg}</p>}
             <Button
               type="submit"
               className="w-full disabled:cursor-not-allowed disabled:opacity-45"
-              disabled={isPending}
             >
-              {isPending ? 'Logging in...' : 'Login'}
+         Login
             </Button>
           </div>
           <div className="mt-4 text-xs text-center">

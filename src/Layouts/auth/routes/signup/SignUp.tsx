@@ -21,9 +21,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@radix-ui/react-label';
 
 const SignUp = () => {
-  const [errorMsg, setErrorMsg] = useState('');
-  const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
+
   const {
     handleSubmit,
     formState: { errors },
@@ -36,20 +34,10 @@ const SignUp = () => {
       password: '',
     },
   });
-  const { mutateAsync, isPending } = useSignup();
   async function submitHandler(data: signUpSchemaType) {
-    dispatch(setIsLoading(true));
-    const user = await mutateAsync(data);
-    if (user.error) {
-      setErrorMsg(user.message);
-      setTimeout(() => {
-        setErrorMsg('');
-      }, 3000);
-      dispatch(setIsLoading(false));
-      return;
-    }
-    navigate('/verify-otp?email=' + data.email);
-    dispatch(setIsLoading(false));
+    console.log(data);
+    alert("valid data")
+   
   }
 
   return (
@@ -98,13 +86,12 @@ const SignUp = () => {
                 </p>
               )}
             </div>
-            {errorMsg && <p className="text-sm text-red-500">{errorMsg}</p>}
             <Button
               type="submit"
               className="w-full disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={isPending}
+            
             >
-              {isPending ? 'Signing up...' : 'Sign Up'}
+              Sign Up
             </Button>
           </div>
           <div className="mt-4 text-sm text-center">
